@@ -6,31 +6,80 @@
       to do list
     </h1>
     <hr>
-    <Todo_List 
-    v-bind:todos="todos" 
+    <input 
+    type="text" 
+    placeholder="Add task" 
+    v-model="newTask"
     />
-    
+    <button
+    v-on:click="inputGetValue"
+    > Add</button>
+    <hr>
+        <!-- <TodoList 
+    v-bind:todos="todos" 
+    /> -->
+
+    <ul v-for="(item, index) in todos" :key="item.id">
+      <li>
+        <input type="checkbox" 
+        v-on:click="checBoxTask(index)"
+        v-bind:checked="item.complited"
+        /> 
+        <span>{{ item.title }}</span>
+        <button
+        v-on:click="deleteTask(index)"
+        > &#x2716; </button>
+      </li>
+      
+    </ul>
+  
   </div>
 
 </template>
 
 <script>
-import Todo_List from '@/components/Todo_List';
+//import TodoList from '@/components/TodoList';
 export default {
   name: 'App',
   data () {
     return {
       todos: [
         {id: 1, title: 'Купить молоко', complited: false},
-        {id: 2, title: 'Купить масло', complited: false},
+        {id: 2, title: 'Купить масло', complited: true},
         {id: 3, title: 'Купить хлеб', complited: true},
         {id: 4, title: 'Купить колбасу', complited: false},
-      ]
+      ],
+      newTask: " ",
 
     }
+    
+
+  },
+  methods: {
+    inputGetValue () {
+      let uuid = Date.now();
+      this.todos.push({id: uuid, title: this.newTask, complited: false})
+      this.newTask = " "
+      
+    },
+    checBoxTask (index) {
+      if (this.todos[index].complited === true) {
+        this.todos[index].complited = false
+      } else {
+        this.todos[index].complited = true
+      }
+      console.log(this.todos[index].complited)
+
+    },
+    deleteTask (index) {
+      this.todos.splice(index, 1)
+      console.log(index)
+     
+    }
+
   },
   components: {
-    Todo_List
+    //TodoList
   }
 }
 </script>
